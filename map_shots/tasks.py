@@ -13,6 +13,8 @@ def make_shot():
     shot = Shot(latlng=[lat, lng])
     shot.save()
 
+    idx = 0
+
     # for i in range(10):
     for j in range(10):
         new_lng = lng + (j * lng_offset)
@@ -21,11 +23,13 @@ def make_shot():
             new_lng
         ])
         shotpart = ShotPart(
+            number=idx,
             shot=shot,
             latlng=[lat, new_lng]
         )
         shotpart.image.save(
+            f'{j}-{"-".join(map(str, (lat, new_lng)))}.png',
             ContentFile(result_bytes),
-            f'{map(str, (lat, new_lng))}.png',
             save=True
         )
+        idx += 1

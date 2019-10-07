@@ -114,6 +114,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    STATIC_ROOT,
+]
 
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
@@ -123,7 +127,7 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 CELERY_BEAT_SCHEDULE = {
-    'task-number-two': {
+    'make-shot-task': {
         'task': 'map_shots.tasks.make_shot',
         'schedule': 60,
     }
