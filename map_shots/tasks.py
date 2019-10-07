@@ -7,7 +7,7 @@ from map_shots.models import Shot, ShotPart
 
 @task()
 def make_shot():
-    lng_offset = 0.022403
+    lng_offset = 0.002403
     lat, lng = [20.512733, 54.710454]
 
     shot = Shot(latlng=[lat, lng])

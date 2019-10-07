@@ -8,7 +8,7 @@ class Shot(models.Model):
     """
     image = models.ImageField(
         verbose_name='Готовое изображение',
-        upload_to='static/images/%Y/%m/%d/',
+        upload_to='images/%Y/%m/%d/',
         null=True,
     )
     created = models.DateTimeField(
@@ -42,7 +42,7 @@ class ShotPart(models.Model):
     )
     image = models.ImageField(
         verbose_name='изображение',
-        upload_to='static/images/%Y/%m/%d/%H_%M',
+        upload_to='images/%Y/%m/%d/%H_%M',
     )
     number = models.IntegerField(
         verbose_name='Номер снимка',
