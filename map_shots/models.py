@@ -1,4 +1,4 @@
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -8,13 +8,19 @@ class Shot(models.Model):
     """
     image = models.ImageField(
         verbose_name='Готовое изображение',
+        upload_to='static/images/%Y/%m/%d/',
+        null=True,
     )
     created = models.DateTimeField(
         verbose_name='Дата создания',
         auto_now=True,
     )
-    latlng = JSONField(
+    latlng = ArrayField(
         verbose_name='Координаты',
+        base_field=models.DecimalField(
+            decimal_places=6,
+            max_digits=9,
+        ),
     )
 
     class Meta:
@@ -36,12 +42,17 @@ class ShotPart(models.Model):
     )
     image = models.ImageField(
         verbose_name='изображение',
+        upload_to='static/images/%Y/%m/%d/%H_%M',
     )
     number = models.IntegerField(
         verbose_name='Номер снимка',
     )
-    latlng = JSONField(
+    latlng = ArrayField(
         verbose_name='Координаты',
+        base_field=models.DecimalField(
+            decimal_places=6,
+            max_digits=9,
+        ),
     )
     created = models.DateTimeField(
         verbose_name='Дата создания',

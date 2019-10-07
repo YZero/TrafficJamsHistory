@@ -124,7 +124,9 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 CELERY_BEAT_SCHEDULE = {
     'task-number-two': {
-        'task': 'map_shots.tasks.task_number_two',
-        'schedule': 59,
+        'task': 'map_shots.tasks.make_shot',
+        'schedule': 60,
     }
 }
+
+YANDEX_STATIC_MAP_API_URL = 'https://static-maps.yandex.ru/1.x/'
