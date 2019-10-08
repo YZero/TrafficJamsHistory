@@ -16,8 +16,8 @@ class YandexStaticMap:
         'trf',
     )
     zoom = 14
-    lat_offset = 0.055
-    lng_offset = 0.0225
+    lat_offset = 0.05574
+    lng_offset = 0.02234
     size = (650, 450)
 
     Point = namedtuple('Point', 'latitude longitude')
