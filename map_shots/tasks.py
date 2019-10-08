@@ -7,29 +7,31 @@ from map_shots.models import Shot, ShotPart
 
 @task()
 def make_shot():
-    lng_offset = 0.002403
-    lat, lng = [20.512733, 54.710454]
+    start_point = [20.440116, 54.768185]
+    end_point = [20.604260, 54.649918]
 
-    shot = Shot(latlng=[lat, lng])
+    point_list = YandexStaticMap.create_point_list(
+        start_point,
+        end_point,
+    )
+
+    shot = Shot(
+        start_latlng=start_point,
+        end_latlng=end_point,
+    )
     shot.save()
 
-    idx = 0
-
-    # for i in range(10):
-    for j in range(10):
-        new_lng = lng + (j * lng_offset)
-        result_bytes = YandexStaticMap.get_image([
-            lat,
-            new_lng
-        ])
+    for idx, point in enumerate(point_list):
+        result_bytes = YandexStaticMap.get_image(lanlng=point)
         shotpart = ShotPart(
             number=idx,
             shot=shot,
-            latlng=[lat, new_lng]
+            latlng=point,
         )
         shotpart.image.save(
-            f'{j}-{"-".join(map(str, (lat, new_lng)))}.png',
+            f'{idx}-{"-".join(map(str, point))}.png',
             ContentFile(result_bytes),
             save=True
         )
-        idx += 1
+
+    shot.join_shotparts()

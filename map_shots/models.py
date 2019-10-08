@@ -1,6 +1,8 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
+from map_shots.api import make_complex_image
+
 
 class Shot(models.Model):
     """
@@ -15,8 +17,15 @@ class Shot(models.Model):
         verbose_name='Дата создания',
         auto_now=True,
     )
-    latlng = ArrayField(
-        verbose_name='Координаты',
+    start_latlng = ArrayField(
+        verbose_name='Начальная точка',
+        base_field=models.DecimalField(
+            decimal_places=6,
+            max_digits=9,
+        ),
+    )
+    end_latlng = ArrayField(
+        verbose_name='Конечная точка',
         base_field=models.DecimalField(
             decimal_places=6,
             max_digits=9,
@@ -30,6 +39,15 @@ class Shot(models.Model):
 
     def __str__(self):
         return f'{self.created}'
+
+    def join_shotparts(self):
+        complex_image = make_complex_image(
+            list(self.shotpart_set.values_list('image'))
+        )
+        self.image.save(
+            f'{self.created.strftime("%H-%M")}.png',
+            complex_image,
+        )
 
 
 class ShotPart(models.Model):
@@ -62,7 +80,7 @@ class ShotPart(models.Model):
     class Meta:
         verbose_name = 'часть'
         verbose_name_plural = 'части'
-        ordering = ('-id',)
+        ordering = ('number',)
 
-    def __unicode__(self):
-        return self.number
+    def __str__(self):
+        return f'{self.number}'

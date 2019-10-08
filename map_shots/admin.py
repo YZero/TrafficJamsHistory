@@ -11,5 +11,5 @@ class ShotPartInlineAdmin(admin.TabularInline):
 
 @admin.register(Shot)
 class ShotAdmin(admin.ModelAdmin):
-    readonly_fields = ('image', 'created', 'latlng',)
-    inlines = (ShotPartInlineAdmin,)
+    readonly_fields = ('image', 'created', 'start_latlng', 'end_latlng')
+    # inlines = (ShotPartInlineAdmin,)

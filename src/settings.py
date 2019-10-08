@@ -128,7 +128,7 @@ CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 CELERY_BEAT_SCHEDULE = {
     'make-shot-task': {
         'task': 'map_shots.tasks.make_shot',
-        'schedule': 60,
+        'schedule': 120,
     }
 }
 
