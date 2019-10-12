@@ -69,8 +69,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'klgtjadb',
-        'USER': 'root',
-        'PASSWORD': '12345',
+        'USER': 'user',
+        'PASSWORD': 'user',
         'HOST': 'localhost',
         'PORT': '5432',
     }
