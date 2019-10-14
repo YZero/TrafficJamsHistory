@@ -76,7 +76,7 @@ class Shot(models.Model):
             list(self.shotpart_set.values_list('image'))
         )
         self.image.save(
-            f'{self.created.strftime("%H-%M")}.jpg',
+            f'{self.square_id}_{self.created.strftime("%H-%M")}.jpg',
             complex_image,
         )
 
