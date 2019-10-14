@@ -14,8 +14,8 @@ def make_shots():
         print(f'square {square}')
 
         point_list = YandexStaticMap.create_point_list(
-            square.start_point,
-            square.end_point,
+            square.start_latlng,
+            square.end_latlng,
         )
 
         shot = Shot(
