@@ -1,15 +1,14 @@
 from django.contrib import admin
 
-from map_shots.models import Shot, ShotPart
+from map_shots.models import Shot, GeoSquare
 
 
-class ShotPartInlineAdmin(admin.TabularInline):
-    readonly_fields = ('image', 'number', 'created', 'latlng',)
+class ShotInlineAdmin(admin.TabularInline):
+    readonly_fields = ('image', 'created')
     extra = 0
-    model = ShotPart
+    model = Shot
 
 
-@admin.register(Shot)
-class ShotAdmin(admin.ModelAdmin):
-    readonly_fields = ('image', 'created', 'start_latlng', 'end_latlng')
-    # inlines = (ShotPartInlineAdmin,)
+@admin.register(GeoSquare)
+class GeoSquareAdmin(admin.ModelAdmin):
+    inlines = (ShotInlineAdmin,)
