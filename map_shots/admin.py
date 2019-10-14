@@ -8,7 +8,13 @@ class ShotInlineAdmin(admin.TabularInline):
     extra = 0
     model = Shot
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(GeoSquare)
 class GeoSquareAdmin(admin.ModelAdmin):
     inlines = (ShotInlineAdmin,)
+
+    def has_delete_permission(self, request, obj=None):
+        return False

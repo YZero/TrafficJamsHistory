@@ -20,8 +20,6 @@ def make_shots():
 
         shot = Shot(
             square=square,
-            start_latlng=square.start_point,
-            end_latlng=square.end_point,
         )
         shot.save()
 

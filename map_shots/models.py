@@ -62,20 +62,6 @@ class Shot(models.Model):
         verbose_name='Дата создания',
         auto_now=True,
     )
-    start_latlng = ArrayField(
-        verbose_name='Начальная точка',
-        base_field=models.DecimalField(
-            decimal_places=6,
-            max_digits=9,
-        ),
-    )
-    end_latlng = ArrayField(
-        verbose_name='Конечная точка',
-        base_field=models.DecimalField(
-            decimal_places=6,
-            max_digits=9,
-        ),
-    )
 
     class Meta:
         verbose_name = 'снимок'
