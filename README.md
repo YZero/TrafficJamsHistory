@@ -1,4 +1,4 @@
-# KtrafficJamsHistory
-Kaliningrad Traffic Jams History
+# TrafficJamsHistory
+Traffic Jams History
 
-Api for log traffic jams situation at the Kaliningrad
+Api for log traffic jams situation at some geo-points
