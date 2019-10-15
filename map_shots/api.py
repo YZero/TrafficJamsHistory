@@ -91,7 +91,7 @@ def grouper(iterable, n, fillvalue=None):
     return zip_longest(*args, fillvalue=fillvalue)
 
 
-def make_complex_image(images_paths_list, blocks=4):
+def make_complex_image(images_paths_list, blocks=5):
     """
     снизу ^ вверх, слева -> направо 
     """
@@ -111,7 +111,7 @@ def make_complex_image(images_paths_list, blocks=4):
 
     y_offset = YandexStaticMap.size[1]
     for idx, chunk in enumerate(chunks):
-        images = list(map(Image.open, chunk))
+        images = list(map(Image.open, filter(lambda x: x, chunk)))
 
         x_offset = 0
         for im in images:
