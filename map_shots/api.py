@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+from decimal import Decimal
 from io import BytesIO
 from itertools import product, zip_longest
 
@@ -16,8 +17,8 @@ class YandexStaticMap:
         'trf',
     )
     zoom = 14
-    lat_offset = 0.05574
-    lng_offset = 0.02234
+    lat_offset = Decimal(0.05574)
+    lng_offset = Decimal(0.02234)
     size = (650, 450)
 
     Point = namedtuple('Point', 'latitude longitude')
