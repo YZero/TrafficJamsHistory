@@ -53,7 +53,6 @@ class GeoSquare(models.Model):
     def make_shot(self):
         """
         сделать снимок
-        :return:
         """
         print(f'square {self}')
 

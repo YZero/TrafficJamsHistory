@@ -4,9 +4,14 @@ from map_shots.models import GeoSquare
 
 
 @task()
-def make_shots():
+def make_shots(square_id=None):
     """
     Сделать снимки квадратов
     """
-    for square in GeoSquare.enabled_squares.all():
+    squares = GeoSquare.enabled_squares.all()
+
+    if square_id:
+        squares = squares.filter(id=square_id)
+
+    for square in squares:
         square.make_shot()
