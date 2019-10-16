@@ -1,13 +1,15 @@
+import math
 import os
 from collections import namedtuple
 from decimal import Decimal
 from io import BytesIO
-from itertools import product, zip_longest
+from itertools import product
 
 import requests
 from PIL import Image
 from django.conf import settings
 from django.core.files.base import ContentFile
+from more_itertools import grouper
 
 
 class YandexStaticMap:
@@ -80,46 +82,43 @@ class YandexStaticMap:
             key=lambda x: x[1]
         ))
 
+    @classmethod
+    def make_complex_image(cls, images_paths_list, latitude_width):
+        """
+        Формирует большой снимок из частей
 
-def grouper(iterable, n, fillvalue=None):
-    """
-    Collect data into fixed-length chunks or blocks
-    :return:
-    """
-    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
-    args = [iter(iterable)] * n
-    return zip_longest(*args, fillvalue=fillvalue)
+        снизу ^ вверх, слева -> направо
+        """
+        # расчёт количества изображений по широте
+        blocks_count = math.ceil(
+            (latitude_width + cls.lat_offset) / cls.lat_offset
+        )
 
+        chunks = grouper(
+            iterable=map(
+                lambda x: os.path.join(settings.MEDIA_ROOT, x[0]),
+                images_paths_list
+            ),
+            n=blocks_count,
+        )
+        chunks = list(chunks)
 
-def make_complex_image(images_paths_list, blocks=5):
-    """
-    снизу ^ вверх, слева -> направо 
-    """
-    chunks = grouper(
-        iterable=map(
-            lambda x: os.path.join(settings.MEDIA_ROOT, x[0]),
-            images_paths_list
-        ),
-        n=blocks,
-    )
-    chunks = list(chunks)
+        total_width = YandexStaticMap.size[0] * blocks_count
+        total_height = YandexStaticMap.size[1] * len(chunks)
 
-    total_width = YandexStaticMap.size[0] * blocks
-    total_height = YandexStaticMap.size[1] * len(chunks)
+        image = Image.new('RGB', (total_width, total_height))
 
-    image = Image.new('RGB', (total_width, total_height))
+        y_offset = YandexStaticMap.size[1]
+        for idx, chunk in enumerate(chunks):
+            images = list(map(Image.open, filter(lambda x: x, chunk)))
 
-    y_offset = YandexStaticMap.size[1]
-    for idx, chunk in enumerate(chunks):
-        images = list(map(Image.open, filter(lambda x: x, chunk)))
+            x_offset = 0
+            for im in images:
+                image.paste(im, (x_offset, total_height - y_offset))
+                x_offset += im.size[0]
 
-        x_offset = 0
-        for im in images:
-            image.paste(im, (x_offset, total_height - y_offset))
-            x_offset += im.size[0]
+            y_offset += YandexStaticMap.size[1]
 
-        y_offset += YandexStaticMap.size[1]
-
-    buffer = BytesIO()
-    image.save(fp=buffer, format='JPEG')
-    return ContentFile(buffer.getvalue())
+        buffer = BytesIO()
+        image.save(fp=buffer, format='JPEG')
+        return ContentFile(buffer.getvalue())

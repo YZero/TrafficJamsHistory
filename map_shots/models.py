@@ -1,7 +1,8 @@
 from django.contrib.postgres.fields import ArrayField
+from django.core.files.base import ContentFile
 from django.db import models
 
-from map_shots.api import make_complex_image
+from map_shots.api import YandexStaticMap
 from map_shots.manager import GeoSquareManager
 
 
@@ -42,6 +43,42 @@ class GeoSquare(models.Model):
     def __str__(self):
         return self.name
 
+    def get_latitude_width(self):
+        """
+        получить ширину широты квадрата
+        """
+        start_latitude, end_latitude = self.start_latlng[0], self.end_latlng[0]
+        return abs(start_latitude - end_latitude)
+
+    def make_shot(self):
+        """
+        сделать снимок
+        :return:
+        """
+        print(f'square {self}')
+
+        point_list = YandexStaticMap.create_point_list(
+            self.start_latlng,
+            self.end_latlng,
+        )
+
+        shot = Shot.objects.create(square=self)
+
+        for idx, point in enumerate(point_list):
+            result_bytes = YandexStaticMap.get_image(lanlng=point)
+            shotpart = ShotPart(
+                number=idx,
+                shot=shot,
+                latlng=point,
+            )
+            shotpart.image.save(
+                f'{idx}-{"-".join(map(str, point))}.png',
+                ContentFile(result_bytes),
+                save=True
+            )
+
+        shot.join_shotparts()
+
 
 class Shot(models.Model):
     """
@@ -72,8 +109,12 @@ class Shot(models.Model):
         return f'{self.created}'
 
     def join_shotparts(self):
-        complex_image = make_complex_image(
-            list(self.shotpart_set.values_list('image'))
+        """
+        собрать части снимка воедино и сохранить
+        """
+        complex_image = YandexStaticMap.make_complex_image(
+            images_paths_list=list(self.shotpart_set.values_list('image')),
+            latitude_width=self.square.get_latitude_width()
         )
         self.image.save(
             f'{self.square_id}_{self.created.strftime("%H-%M")}.jpg',
