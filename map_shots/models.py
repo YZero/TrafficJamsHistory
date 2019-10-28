@@ -102,7 +102,7 @@ class Shot(models.Model):
     class Meta:
         verbose_name = 'снимок'
         verbose_name_plural = 'Снимки'
-        ordering = ('created',)
+        ordering = ('-created',)
 
     def __str__(self):
         return f'{self.created}'
