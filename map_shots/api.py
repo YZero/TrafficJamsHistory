@@ -1,5 +1,4 @@
 import math
-import os
 from collections import namedtuple
 from decimal import Decimal
 from io import BytesIO
@@ -83,7 +82,7 @@ class YandexStaticMap:
         ))
 
     @classmethod
-    def make_complex_image(cls, images_paths_list, latitude_width):
+    def make_complex_image(cls, file_objects_list, latitude_width):
         """
         Формирует большой снимок из частей
 
@@ -95,10 +94,7 @@ class YandexStaticMap:
         )
 
         chunks = grouper(
-            iterable=map(
-                lambda x: os.path.join(settings.MEDIA_ROOT, x[0]),
-                images_paths_list
-            ),
+            iterable=file_objects_list,
             n=blocks_count,
         )
         chunks = list(chunks)

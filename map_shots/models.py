@@ -62,21 +62,13 @@ class GeoSquare(models.Model):
         )
 
         shot = Shot.objects.create(square=self)
+        file_objects_list = []
 
         for idx, point in enumerate(point_list):
             result_bytes = YandexStaticMap.get_image(lanlng=point)
-            shotpart = ShotPart(
-                number=idx,
-                shot=shot,
-                latlng=point,
-            )
-            shotpart.image.save(
-                f'{idx}-{"-".join(map(str, point))}.png',
-                ContentFile(result_bytes),
-                save=True
-            )
+            file_objects_list.append(ContentFile(result_bytes))
 
-        shot.join_shotparts()
+        shot.join_shotparts(file_objects_list)
 
 
 class Shot(models.Model):
@@ -107,51 +99,15 @@ class Shot(models.Model):
     def __str__(self):
         return f'{self.created}'
 
-    def join_shotparts(self):
+    def join_shotparts(self, file_objects_list):
         """
         собрать части снимка воедино и сохранить
         """
         complex_image = YandexStaticMap.make_complex_image(
-            images_paths_list=list(self.shotpart_set.values_list('image')),
+            file_objects_list=file_objects_list,
             latitude_width=self.square.get_latitude_width()
         )
         self.image.save(
             f'{self.square_id}_{self.created.strftime("%H-%M")}.jpg',
             complex_image,
         )
-
-
-class ShotPart(models.Model):
-    """
-    Часть снимка карты со слоем пробок
-    """
-    shot = models.ForeignKey(
-        Shot,
-        on_delete=models.CASCADE,
-    )
-    image = models.ImageField(
-        verbose_name='изображение',
-        upload_to='images/%Y/%m/%d/%H_%M',
-    )
-    number = models.IntegerField(
-        verbose_name='Номер снимка',
-    )
-    latlng = ArrayField(
-        verbose_name='Координаты',
-        base_field=models.DecimalField(
-            decimal_places=6,
-            max_digits=9,
-        ),
-    )
-    created = models.DateTimeField(
-        verbose_name='Дата создания',
-        auto_now=True,
-    )
-
-    class Meta:
-        verbose_name = 'часть'
-        verbose_name_plural = 'части'
-        ordering = ('number',)
-
-    def __str__(self):
-        return f'{self.number}'
