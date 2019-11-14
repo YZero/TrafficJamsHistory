@@ -9,7 +9,7 @@ class ShotListView(JSONResponseMixin, View):
     список карт
     """
 
-    def get(self, request, *args, **kwargs):
+    def get_offset_limit_parameters(self, request):
         try:
             offset = int(request.GET.get('offset'))
         except (ValueError, TypeError):
@@ -19,8 +19,20 @@ class ShotListView(JSONResponseMixin, View):
             limit = int(request.GET.get('limit'))
         except (ValueError, TypeError):
             limit = 200
+        return offset, limit
 
-        shots = Shot.objects.all()[offset:offset + limit]
+    def get_shots(self, filter_kwargs=None):
+        if not filter_kwargs:
+            filter_kwargs = {}
+        shots = Shot.objects.filter(**filter_kwargs)
+        return shots
+
+    def get(self, request, *args, **kwargs):
+        offset, limit = self.get_offset_limit_parameters(request)
+
+        shots = self.get_shots({
+            'is_combination': False
+        })[offset:offset + limit]
 
         shots_result = [
             {
@@ -33,5 +45,13 @@ class ShotListView(JSONResponseMixin, View):
             } for shot in shots
         ]
         return self.render_to_json_response(context={
-            'shots': list(shots_result),
+            'shots': shots_result,
+        })
+
+
+class ShotCombinationListView(ShotListView):
+
+    def get_shots(self, filter_kwargs=None):
+        return super().get_shots({
+            'is_combination': True
         })

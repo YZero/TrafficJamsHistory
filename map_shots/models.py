@@ -70,6 +70,13 @@ class GeoSquare(models.Model):
 
         shot.join_shotparts(file_objects_list)
 
+    def make_combination(self):
+        """
+        объединить снимки
+        """
+        print(f'square {self}')
+        # TODO придумать что-нибудь!
+
 
 class Shot(models.Model):
     """
@@ -89,6 +96,10 @@ class Shot(models.Model):
     created = models.DateTimeField(
         verbose_name='Дата создания',
         auto_now=True,
+    )
+    is_combination = models.BooleanField(
+        verbose_name='Объединённый снимок',
+        default=False,
     )
 
     class Meta:

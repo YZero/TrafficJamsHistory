@@ -6,6 +6,10 @@
             <a href="{% url 'admin:map_shots_geosquare_change' object_id %}?make_shot=1"
                class="historylink">Make shot</a>
         </li>
+        <li>
+            <a href="{% url 'admin:map_shots_geosquare_change' object_id %}?make_combinations=1"
+               class="historylink">Make shot combination</a>
+        </li>
     {% endif %}
     {{ block.super }}
 {% endblock %}
