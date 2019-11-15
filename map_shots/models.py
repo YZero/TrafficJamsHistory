@@ -75,7 +75,21 @@ class GeoSquare(models.Model):
         объединить снимки
         """
         print(f'square {self}')
-        # TODO придумать что-нибудь!
+
+        combined_image = YandexStaticMap.make_combined_image(
+            file_paths_list=self.shot_set.filter(
+                is_combination=False,
+            ).values_list('image', flat=True),
+        )
+
+        shot = Shot.objects.create(
+            square=self,
+            is_combination=True,
+        )
+        shot.image.save(
+            f'{self.id}_{shot.created.strftime("%H-%M")}.jpg',
+            combined_image,
+        )
 
 
 class Shot(models.Model):

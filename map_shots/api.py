@@ -1,4 +1,5 @@
 import math
+import os
 from collections import namedtuple
 from decimal import Decimal
 from io import BytesIO
@@ -117,4 +118,33 @@ class YandexStaticMap:
 
         buffer = BytesIO()
         image.save(fp=buffer, format='JPEG')
+        return ContentFile(buffer.getvalue())
+
+    @classmethod
+    def make_combined_image(cls, file_paths_list):
+        """
+        Соединяет все снимки воедино
+        """
+        file_paths_list = map(
+            lambda p: os.path.join(settings.MEDIA_ROOT, p),
+            file_paths_list
+        )
+
+        base_image = None
+
+        for path in file_paths_list:
+            try:
+                image = Image.open(path)
+            except FileNotFoundError:
+                continue
+
+            if not base_image:
+                base_image = image
+            else:
+                if not base_image.size == image.size:
+                    continue
+                base_image = Image.blend(base_image, image, alpha=0.5)
+
+        buffer = BytesIO()
+        base_image.save(fp=buffer, format='JPEG')
         return ContentFile(buffer.getvalue())
