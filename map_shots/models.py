@@ -79,6 +79,8 @@ class GeoSquare(models.Model):
         combined_image = YandexStaticMap.make_combined_image(
             file_paths_list=self.shot_set.filter(
                 is_combination=False,
+            ).exclude(
+                image='',
             ).values_list('image', flat=True),
         )
 
