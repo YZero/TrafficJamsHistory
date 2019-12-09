@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+{% if not request.user.is_authenticated %}
+    <form action="{% url 'login_url' %}" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Login!">
+        <input type="hidden" name="next" id="next" value="{% url 'personal_things' %}">
+    </form>
+{% else %}
+    Уже авторизован! Привет {{ request.user }}!
+{% endif %}
+</body>
+</html>

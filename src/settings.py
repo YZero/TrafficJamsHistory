@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'map_shots',
+    'personal_items',
     'celery',
     'corsheaders',
 ]
@@ -73,8 +74,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'klgtjadb',
-        'USER': 'user',
-        'PASSWORD': 'user',
+        'USER': 'root',
+        'PASSWORD': '12345',
         'HOST': 'localhost',
         'PORT': '5432',
     }
