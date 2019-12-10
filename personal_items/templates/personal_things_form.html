@@ -13,7 +13,7 @@
     {% endif %}
 
     <form class="form" name="product" method="post"
-          action="{% url 'add_personal_thing' %}">
+          action="{% url 'add_personal_thing' %}" autocomplete="off">
         {% csrf_token %}
         <div class="results"></div>
         <input type="text" id="autoComplete" name="nomenclature_name"

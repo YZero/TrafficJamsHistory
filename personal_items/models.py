@@ -94,6 +94,7 @@ class PersonalThing(models.Model):
     class Meta:
         verbose_name = 'вещь'
         verbose_name_plural = 'Личные вещи'
+        ordering = ('-id',)
 
     def __str__(self):
         return (

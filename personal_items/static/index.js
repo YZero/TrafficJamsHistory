@@ -12,7 +12,7 @@ const nom = new autoComplete({
         key: ["name"],
         cache: false
     },
-    placeHolder: "Наименование вещи",     // Place Holder text                 | (Optional)
+    placeHolder: "Вещь",     // Place Holder text                 | (Optional)
     resultsList: {                       // Rendered results list object      | (Optional)
         render: true,
         container: source => {
@@ -55,7 +55,7 @@ const unit = new autoComplete({
         cache: false
     },
     selector: "#unitAutoComplete",
-    placeHolder: "Наименование ед. изм.",     // Place Holder text                 | (Optional)
+    placeHolder: "ед. изм.",     // Place Holder text                 | (Optional)
     resultsList: {                       // Rendered results list object      | (Optional)
         render: true,
         container: source => {
