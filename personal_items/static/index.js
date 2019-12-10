@@ -29,24 +29,13 @@ const nom = new autoComplete({
         element: "li"
     },
     noResults: () => {                     // Action script on noResults      | (Optional)
-        const result = document.createElement("li");
-        result.setAttribute("class", "no_result");
-        result.setAttribute("tabindex", "1");
-        result.innerHTML = "No Results";
-        document.querySelector("#nomenclature_list").appendChild(result);
+        document.querySelector(".selection_nomenclature").innerHTML = 'Новая запись: ' + document.querySelector("#autoComplete").value;
+        document.querySelector("#id_nomenclature").value = '';
     },
     onSelection: feedback => {
-        const selection = feedback.selection.value.name;
-        // Render selected choice to selection div
-        document.querySelector(".selection_nomenclature").innerHTML = selection;
-        document.querySelector(".input_nomenclature_id").value = feedback.selection.value.id;
-        // Clear Input
+        document.querySelector(".selection_nomenclature").innerHTML = feedback.selection.value.name;
+        document.querySelector("#id_nomenclature").value = feedback.selection.value.id;
         document.querySelector("#autoComplete").value = "";
-        // Change placeholder with the selected value
-        document
-            .querySelector("#autoComplete")
-            .setAttribute("placeholder", selection);
-        // Action script onSelection event | (Optional)
     }
 });
 
@@ -83,23 +72,13 @@ const unit = new autoComplete({
         element: "li"
     },
     noResults: () => {                     // Action script on noResults      | (Optional)
-        const result = document.createElement("li");
-        result.setAttribute("class", "no_result");
-        result.setAttribute("tabindex", "1");
-        result.innerHTML = "No Results2";
-        document.querySelector("#unit_list").appendChild(result);
+        document.querySelector(".selection_unit").innerHTML = 'Новая запись: ' + document.querySelector("#unitAutoComplete").value;
+        document.querySelector("#id_unit").value = '';
     },
     onSelection: feedback => {
-        const selection = feedback.selection.value.name;
-        // Render selected choice to selection div
-        document.querySelector(".selection_unit").innerHTML = selection;
-        document.querySelector(".input_unit_id").value = feedback.selection.value.id;
+        document.querySelector(".selection_unit").innerHTML = feedback.selection.value.name;
+        document.querySelector("#id_unit").value = feedback.selection.value.id;
         // Clear Input
         document.querySelector("#unitAutoComplete").value = "";
-        // Change placeholder with the selected value
-        document
-            .querySelector("#unitAutoComplete")
-            .setAttribute("placeholder", selection);
-        // Action script onSelection event | (Optional)
     }
 });

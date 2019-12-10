@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Список добавленных вещей
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="heading">Уже Добавленные вещи</h1>
+    <a href="{% url 'add_personal_thing' %}">Добавить!</a>
+    <ul>
+        {% for personalthing in personalthing_list %}
+            <li>{{ personalthing }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

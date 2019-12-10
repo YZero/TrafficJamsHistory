@@ -6,7 +6,7 @@ from django.urls import path
 
 from map_shots.views import ShotListView, ShotCombinationListView
 from personal_items.views import NomenclatureListView, UnitListView, \
-    PersonalThingsFormView
+    PersonalThingsFormView, PersonalThingsListView
 
 urlpatterns = [
     path('', ShotListView.as_view(), name='shot_list'),
@@ -20,9 +20,12 @@ urlpatterns = [
     path('units/',
          UnitListView.as_view(),
          name='unit_list'),
+    path('list/',
+         PersonalThingsListView.as_view(),
+         name='personal_things'),
     path('add/',
          PersonalThingsFormView.as_view(),
-         name='personal_things'),
+         name='add_personal_thing'),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login_url'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

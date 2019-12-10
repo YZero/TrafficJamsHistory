@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import ListView, CreateView
 
 from map_shots.mixins import JSONResponseMixin
-from personal_items.models import Nomenclature, Unit
+from personal_items.forms import PersonalThingForm
+from personal_items.models import Nomenclature, Unit, PersonalThing
 
 
 class BaseDictModelListView(JSONResponseMixin, View):
@@ -48,10 +48,38 @@ class UnitListView(BaseDictModelListView):
     key = 'units'
 
 
-class PersonalThingsFormView(LoginRequiredMixin, TemplateView):
+class PersonalThingsFormView(LoginRequiredMixin, CreateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'personal_things_form.html'
+    form_class = PersonalThingForm
+    success_url = '/add/'
 
-    def post(self, request, *args, **kwargs):
-        return HttpResponse()
+    def get_form_kwargs(self):
+        f_kwargs = super().get_form_kwargs()
+
+        if 'data' in f_kwargs:
+            data = f_kwargs['data'].copy()
+
+            if not data['nomenclature'] and data['nomenclature_name']:
+                new_nomenclature = Nomenclature.objects.create(
+                    name=data['nomenclature_name']
+                )
+                data['nomenclature'] = new_nomenclature.id
+                f_kwargs['data'] = data
+
+            if not data['unit'] and data['unit_name']:
+                new_unit = Unit.objects.create(
+                    name=data['unit_name']
+                )
+                data['unit'] = new_unit.id
+                f_kwargs['data'] = data
+
+        return f_kwargs
+
+
+class PersonalThingsListView(LoginRequiredMixin, ListView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+    model = PersonalThing
+    template_name = 'personal_things_list.html'

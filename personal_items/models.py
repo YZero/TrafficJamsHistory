@@ -96,5 +96,8 @@ class PersonalThing(models.Model):
         verbose_name_plural = 'Личные вещи'
 
     def __str__(self):
-        return f'{self.nomenclature.name} x {self.quantity} x {self.cost}'
+        return (
+            f'{self.nomenclature.name} - {self.quantity} '
+            f'{self.unit.name} - {self.cost} руб.'
+        )
 

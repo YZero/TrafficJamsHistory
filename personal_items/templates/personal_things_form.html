@@ -1,32 +1,41 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>inventory</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/css/autoComplete.min.css">
-</head>
-<body>
-<div class="root">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    inventory
+{% endblock %}
+
+{% block body %}
     <h1 class="heading">Добавление вещи в опись<span class="date"></span></h1>
-    <form class="form" name="product" method="post">
+    <a href="{% url 'personal_things' %}">Список уже добавленных!</a>
+    {% if success %}
+        Запись успешно добавлена!
+    {% endif %}
+
+    <form class="form" name="product" method="post"
+          action="{% url 'add_personal_thing' %}">
+        {% csrf_token %}
         <div class="results"></div>
-        <input type="text" id="autoComplete" name="nomenclature_name" class="input input_name" placeholder="Наименование">
-        <input type="text" id="unitAutoComplete" name="unit_name" class="input input_unit" placeholder="ед. измерения">
+        <input type="text" id="autoComplete" name="nomenclature_name"
+               class="input input_name" placeholder="Наименование">
+        <input type="text" id="unitAutoComplete" name="unit_name"
+               class="input input_unit" placeholder="ед. измерения">
         <div class="selection selection_nomenclature"></div>
         <div class="selection selection_unit"></div>
-        <input type="hidden" name="nomenclature_id" class="input_nomenclature_id">
-        <input type="hidden" name="unit_id" class="input_unit_id">
-        <input type="text" name="quantity" class="input input_quantity" placeholder="количество">
-        <input type="text" name="cost" class="input input_cost" placeholder="стоимость">
+        {{ form.nomenclature }}
+        {{ form.nomenclature.errors }}
+        {{ form.unit }}
+        {{ form.unit.errors }}
+        {{ form.quantity }}
+        {{ form.quantity.errors }}
+        {{ form.cost }}
+        {{ form.cost.errors }}
         <button type="submit" name="button" class="button">Добавить
         </button>
     </form>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script>
-<script src="index.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@7.2.0/dist/js/autoComplete.min.js"></script>
+    <script src="{% static 'index.js' %}"></script>
+{% endblock %}

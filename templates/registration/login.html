@@ -1,19 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-{% if not request.user.is_authenticated %}
-    <form action="{% url 'login_url' %}" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Login!">
-        <input type="hidden" name="next" id="next" value="{% url 'personal_things' %}">
-    </form>
-{% else %}
-    Уже авторизован! Привет {{ request.user }}!
-{% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+    {% if not request.user.is_authenticated %}
+        <form action="{% url 'login_url' %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="oassword">Username</label>
+                <div>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+            </div>
+            <div>
+                <label for="oassword">Password</label>
+                <div>
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+            </div>
+            <input type="submit" value="Login!">
+            <input type="hidden" name="next" id="next"
+                   value="{% url 'add_personal_thing' %}">
+        </form>
+    {% else %}
+        Уже авторизован! Привет {{ request.user }}!
+        <a href="{% url 'personal_things' %}">Вещи!</a>
+        <a href="{% url 'add_personal_thing' %}">Добавить!</a>
+    {% endif %}
+{% endblock %}
