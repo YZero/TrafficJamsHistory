@@ -26,10 +26,12 @@
         {{ form.nomenclature.errors }}
         {{ form.unit }}
         {{ form.unit.errors }}
-        {{ form.quantity }}
-        {{ form.quantity.errors }}
-        {{ form.cost }}
-        {{ form.cost.errors }}
+        <div class="container">
+            {{ form.quantity }}
+            {{ form.quantity.errors }}
+            {{ form.cost }}
+            {{ form.cost.errors }}
+        </div>
         <button type="submit" name="button" class="button">Добавить
         </button>
     </form>
