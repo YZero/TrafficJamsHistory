@@ -1,6 +1,12 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.template.loader import get_template
 from django.views import View
 from django.views.generic import ListView, CreateView
+from xhtml2pdf import pisa
 
 from map_shots.mixins import JSONResponseMixin
 from personal_items.forms import PersonalThingForm
@@ -83,3 +89,50 @@ class PersonalThingsListView(LoginRequiredMixin, ListView):
     redirect_field_name = 'redirect_to'
     model = PersonalThing
     template_name = 'personal_things_list.html'
+
+
+class PdfPrintView(View):
+
+    @staticmethod
+    def link_callback(uri, rel):
+        """
+        Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+        resources
+        """
+        sUrl = settings.STATIC_URL
+        sRoot = settings.STATIC_ROOT
+        mUrl = settings.MEDIA_URL
+        mRoot = settings.MEDIA_ROOT
+
+        if uri.startswith(mUrl):
+            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        elif uri.startswith(sUrl):
+            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        else:
+            return uri
+
+        if not os.path.isfile(path):
+            raise Exception(f'media URI must start with {sUrl} or {mUrl}')
+        return path
+
+    def get(self, request, *args, **kwargs):
+        template_path = 'pdf_template.html'
+        context = {
+            'personal_things': PersonalThing.objects.all(),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # create a pdf
+        pisa_status = pisa.CreatePDF(
+            html,
+            dest=response,
+            link_callback=self.link_callback,
+        )
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response

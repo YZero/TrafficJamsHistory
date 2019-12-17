@@ -5,8 +5,10 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from map_shots.views import ShotListView, ShotCombinationListView
-from personal_items.views import NomenclatureListView, UnitListView, \
-    PersonalThingsFormView, PersonalThingsListView
+from personal_items.views import (
+    NomenclatureListView, UnitListView,  PersonalThingsFormView,
+    PersonalThingsListView, PdfPrintView,
+)
 
 urlpatterns = [
     path('', ShotListView.as_view(), name='shot_list'),
@@ -26,6 +28,9 @@ urlpatterns = [
     path('add/',
          PersonalThingsFormView.as_view(),
          name='add_personal_thing'),
+    path('pdf/',
+         PdfPrintView.as_view(),
+         name='print_pdf'),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login_url'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

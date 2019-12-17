@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <style type="text/css">
+        @font-face {
+            font-family: 'PT Sans';
+            src: url("/static/fonts/PTS55F_W.ttf");
+        }
+
+        @font-face {
+            font-family: 'PT Sans';
+            src: url("/static/fonts/PTS75F_W.ttf");
+            font-weight: bold;
+        }
+
+        @font-face {
+            font-family: 'PT Sans';
+            src: url("/static/fonts/PTS56F_W.ttf");
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'PT Sans';
+            src: url("/static/fonts/PTS76F_W.ttf");
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        @page {
+            size: a4;
+            margin: 1cm 1cm 1cm 2cm;
+            @frame footer_frame {
+            -pdf-frame-content: footer_content;
+            left: 17cm;
+            width: 512pt;
+            top: 772pt;
+            height: 20pt;
+        }
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            font-family: 'PT Sans';
+            font-size: 10pt;
+            line-height: 12pt;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, div, td, tr {
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        br, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        span {
+            font-weight: normal;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 13pt;
+            font-weight: bold;
+            margin: 0 0 18px 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 11pt;
+            line-height: 12pt;
+            font-weight: bold;
+            margin: 10px 0 3px 0;
+            padding: 0;
+        }
+
+        .table {
+            margin-bottom: 1cm;
+        }
+
+        .table td {
+            border: 1px solid #999;
+            padding: 2px 4px;
+        }
+
+        .signs td {
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+
+
+<body>
+
+{% for thing in personal_things %}
+    <p>{{ thing.nomenclature.name }} -  {{ thing.quantity }} {{ thing.unit.name }} - {{ thing.cost }} руб</p>
+{% endfor %}
+
+</body>
+</html>
