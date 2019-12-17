@@ -92,6 +92,8 @@ class PersonalThingsListView(LoginRequiredMixin, ListView):
 
 
 class PdfPrintView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     @staticmethod
     def link_callback(uri, rel):
