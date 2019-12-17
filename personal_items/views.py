@@ -91,7 +91,7 @@ class PersonalThingsListView(LoginRequiredMixin, ListView):
     template_name = 'personal_things_list.html'
 
 
-class PdfPrintView(View):
+class PdfPrintView(LoginRequiredMixin, View):
 
     @staticmethod
     def link_callback(uri, rel):
