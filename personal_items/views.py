@@ -1,5 +1,4 @@
 from itertools import zip_longest
-from pprint import pprint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum

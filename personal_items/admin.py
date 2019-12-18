@@ -10,7 +10,8 @@ class PersonalThingAdmin(admin.ModelAdmin):
 
 @admin.register(Nomenclature)
 class NomenclatureAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('name',)
+    ordering = ('name',)
 
 
 @admin.register(Unit)
