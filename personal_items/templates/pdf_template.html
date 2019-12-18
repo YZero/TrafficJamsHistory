@@ -122,14 +122,16 @@
 </div>
 
 {% for things in next_things_pages %}
-<div>
-    <p style="text-align: center;">{{ thing.counter }}</p>
-    <p style="padding-left: 20px;">{{ thing.nomenclature__name }}</p>
-    <p style="text-align: center;">&#10003;</p>
-    <p style="text-align: center;">{{ thing.quantity }}</p>
-    <p style="text-align: center;">{{ thing.unit__name }}</p>
-    <p style="padding-left: 20px;">{{ thing.cost }}</p>
-</div>
+    {% for thing in things %}
+        <div>
+            <p style="text-align: center;">{{ thing.counter }}</p>
+            <p style="padding-left: 20px;">{{ thing.nomenclature__name }}</p>
+            <p style="text-align: center;">&#10003;</p>
+            <p style="text-align: center;">{{ thing.quantity }}</p>
+            <p style="text-align: center;">{{ thing.unit__name }}</p>
+            <p style="padding-left: 20px;">{{ thing.cost }}</p>
+        </div>
+    {% endfor %}
 {% endfor %}
 
 
