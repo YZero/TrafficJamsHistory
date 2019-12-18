@@ -122,65 +122,55 @@
 </div>
 
 {% for things in next_things_pages %}
-    {% for thing in things %}
-        <div>
-            <p style="text-align: center;">{{ thing.counter }}</p>
-            <p style="padding-left: 20px;">{{ thing.nomenclature__name }}</p>
-            <p style="text-align: center;">&#10003;</p>
-            <p style="text-align: center;">{{ thing.quantity }}</p>
-            <p style="text-align: center;">{{ thing.unit__name }}</p>
-            <p style="padding-left: 20px;">{{ thing.cost }}</p>
-        </div>
-    {% endfor %}
+    <div class="root">
+        <section>
+            <table>
+                <caption>ДОПОЛНИТЕЛЬНЫЙ ЛИСТ №<span style="letter-spacing: -5px;">__________</span> ОПИСИ ВЛОЖЕНИЯ</caption>
+                <tr>
+                    <th style="width: 100px;">№ п/п</th>
+                    <th>Наименование</th>
+                    <th style="width: 100px;">Б/у
+                        <small>(ставим галку)</small>
+                    </th>
+                    <th style="width: 100px;">Кол-во</th>
+                    <th style="width: 90px;">Ед.измер.
+                        <small>(шт./пары)</small>
+                    </th>
+                    <th style="width: 100px;">Стоимость
+                        <small>(рубли)</small>
+                    </th>
+                </tr>
+                {% for thing in things %}
+                    {% if thing %}
+                        <tr>
+                            <td style="text-align: center;">{{ thing.counter }}</td>
+                            <td style="padding-left: 20px;">{{ thing.nomenclature__name }}</td>
+                            <td style="text-align: center;">&#10003;</td>
+                            <td style="text-align: center;">{{ thing.quantity }}</td>
+                            <td style="text-align: center;">{{ thing.unit__name }}</td>
+                            <td style="padding-left: 20px;">{{ thing.cost }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </section>
+        <footer>
+            <div class="line" style="width: 100%; justify-content: space-between;">
+                <div style="width: 60%; display: flex;">
+                    <p>Подпись</p>
+                    <div class="underline"></div>
+                    <p>/</p>
+                    <div class="underline"></div>
+                    <p>/</p>
+                </div>
+                <div style="width: 30%; display: flex;">
+                    <p>Дата</p>
+                    <div class="underline" style="width: 100%;"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
 {% endfor %}
-
-
-<div class="root">
-    <section>
-        <table>
-            <caption>ДОПОЛНИТЕЛЬНЫЙ ЛИСТ №<span style="letter-spacing: -5px;">__________</span> ОПИСИ ВЛОЖЕНИЯ</caption>
-            <tr>
-                <th style="width: 100px;">№ п/п</th>
-                <th>Наименование</th>
-                <th style="width: 100px;">Б/у
-                    <small>(ставим галку)</small>
-                </th>
-                <th style="width: 100px;">Кол-во</th>
-                <th style="width: 90px;">Ед.измер.
-                    <small>(шт./пары)</small>
-                </th>
-                <th style="width: 100px;">Стоимость
-                    <small>(рубли)</small>
-                </th>
-            </tr>
-            {% for thing in personalthing_list|slice:"12 : 36" %}
-            <tr>
-                <td style="text-align: center;">{{ thing.counter }}</td>
-                <td style="padding-left: 20px;">{{ thing.nomenclature.name }}</td>
-                <td style="text-align: center;">&#10003;</td>
-                <td style="text-align: center;">{{ thing.quantity }}</td>
-                <td style="text-align: center;">{{ thing.unit.name }}</td>
-                <td style="padding-left: 20px;">{{ thing.cost }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </section>
-    <footer>
-        <div class="line" style="width: 100%; justify-content: space-between;">
-            <div style="width: 60%; display: flex;">
-                <p>Подпись</p>
-                <div class="underline"></div>
-                <p>/</p>
-                <div class="underline"></div>
-                <p>/</p>
-            </div>
-            <div style="width: 30%; display: flex;">
-                <p>Дата</p>
-                <div class="underline" style="width: 100%;"></div>
-            </div>
-        </div>
-    </footer>
-</div>
 
 </body>
 </html>
