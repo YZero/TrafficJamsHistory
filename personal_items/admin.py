@@ -11,6 +11,7 @@ class PersonalThingAdmin(admin.ModelAdmin):
 @admin.register(Nomenclature)
 class NomenclatureAdmin(admin.ModelAdmin):
     search_fields = ('name',)
+    ordering = ('name',)
 
 
 @admin.register(Unit)
