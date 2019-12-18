@@ -1,16 +1,172 @@
+{% load humanize %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>inventory</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/pdf.css"/>
 </head>
-
 <body>
+<div class="root">
+    <header>
+        <div class="header">
+            <div class="line">
+                <p class="txt">От</p>
+                <div class="underline"></div>
+            </div>
+            <div class="line">
+                <div class="underline"></div>
+            </div>
+            <div class="line">
+                <p>паспорт</p>
+                <div style="width: 40%; display: flex;">
+                    <div class="underline"></div>
+                    <p>_</p>
+                    <div class="underline"></div>
+                </div>
 
-{% for thing in personalthing_list %}
-    <p>{{ thing.nomenclature.name }} -  {{ thing.quantity }} {{ thing.unit.name }} - {{ thing.cost }} руб</p>
-{% endfor %}
+                <p style="margin-inline-start: -21px;">№</p>
+                <div class="underline"></div>
+            </div>
+            <div class="line">
+                <p class="txt">дата выдачи</p>
+                <div class="underline"></div>
+            </div>
+            <div class="line">
+                <p class="txt">кем выдан</p>
+                <div class="underline"></div>
+            </div>
+            <div class="line">
+                <div class="underline"></div>
+            </div>
+        </div>
+    </header>
+    <article>
+        <p>
+            Прошу осуществить перевозку личных вещей в город Калининград
+        </p>
+        <p>
+            Настоящим подтверждаю, что в грузе отсутствует пищевая, алкогольная и табачная продукция,
+            семена и растения высушенные или нет, корма для животных, медикаменты, шины б/у или новые
+            для колес и иные непринимаемые предметы со списком которых я ознакомлен (-а)
+        </p>
+    </article>
+    <section>
+        <table>
+            <caption>ОПИСЬ ВЛОЖЕНИЯ</caption>
+            <tr>
+                <th style="width: 100px;">№ п/п</th>
+                <th>Наименование</th>
+                <th style="width: 100px;">Б/у
+                    <small>(ставим галку)</small>
+                </th>
+                <th style="width: 100px;">Кол-во</th>
+                <th style="width: 90px;">Ед.измер.
+                    <small>(шт./пары)</small>
+                </th>
+                <th style="width: 100px;">Стоимость
+                    <small>(рубли)</small>
+                </th>
+            </tr>
+            {% for thing in personalthing_list|slice:":12" %}
+            <tr>
+                <td style="text-align: center;">{{ forloop.counter }}</td>
+                <td style="padding-left: 20px;">{{ thing.nomenclature.name }}</td>
+                <td style="text-align: center;">&#10003;</td>
+                <td style="text-align: center;">{{ thing.quantity }}</td>
+                <td style="text-align: center;">{{ thing.unit.name }}</td>
+                <td style="padding-left: 20px;">{{ thing.cost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    <footer>
+        <div style="width: 60%;">
+            <div class="line">
+                <p class="txt">Общая стоимость</p>
+                <div class="underline"></div>
+                <p>рублей</p>
+            </div>
+            <div>
+                <div class="line">
+                    <p class="txt">Количество листов описи</p>
+                    <div class="underline" style="width: 40%"></div>
+                    <p>лист</p>
+                    <div class="underline" style="width: 10%"></div>
+                </div>
+                <div>
+                    <p style="margin: -30px 0 16px; text-align: center; font-size: 18px;">
+                        (заполняется при наличии продолжения на дополнительном листе к описи)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="line" style="width: 100%; justify-content: space-between;">
+            <div style="width: 60%; display: flex;">
+                <p>Подпись</p>
+                <div class="underline"></div>
+                <p>/</p>
+                <div class="underline"></div>
+                <p>/</p>
+            </div>
+            <div style="width: 30%; display: flex;">
+                <p>Дата</p>
+                <div class="underline" style="width: 100%;"></div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<div class="root">
+    <section>
+        <table>
+            <caption>ДОПОЛНИТЕЛЬНЫЙ ЛИСТ №<span style="letter-spacing: -5px;">__________</span> ОПИСИ ВЛОЖЕНИЯ</caption>
+            <tr>
+                <th style="width: 100px;">№ п/п</th>
+                <th>Наименование</th>
+                <th style="width: 100px;">Б/у
+                    <small>(ставим галку)</small>
+                </th>
+                <th style="width: 100px;">Кол-во</th>
+                <th style="width: 90px;">Ед.измер.
+                    <small>(шт./пары)</small>
+                </th>
+                <th style="width: 100px;">Стоимость
+                    <small>(рубли)</small>
+                </th>
+            </tr>
+            {% for thing in personalthing_list|slice:"12 : 36" %}
+            <tr>
+                <td style="text-align: center;">{{ forloop.counter }}</td>
+                <td style="padding-left: 20px;">{{ thing.nomenclature.name }}</td>
+                <td style="text-align: center;">&#10003;</td>
+                <td style="text-align: center;">{{ thing.quantity }}</td>
+                <td style="text-align: center;">{{ thing.unit.name }}</td>
+                <td style="padding-left: 20px;">{{ thing.cost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    <footer>
+        <div class="line" style="width: 100%; justify-content: space-between;">
+            <div style="width: 60%; display: flex;">
+                <p>Подпись</p>
+                <div class="underline"></div>
+                <p>/</p>
+                <div class="underline"></div>
+                <p>/</p>
+            </div>
+            <div style="width: 30%; display: flex;">
+                <p>Дата</p>
+                <div class="underline" style="width: 100%;"></div>
+            </div>
+        </div>
+    </footer>
+</div>
 
 </body>
 </html>

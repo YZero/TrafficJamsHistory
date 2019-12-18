@@ -1,0 +1,101 @@
+@import url(/static/normalize.css);
+/*root*/
+.root {
+    background-color: #fff;
+    width: 1645px;
+    height: 2338px;
+    font-family: 'Roboto Slab';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 0;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+}
+
+.txt {
+    white-space: nowrap;
+}
+
+article {
+    width: 90%;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.underline {
+    border-bottom: black 1px solid;
+    height: 70px;
+    width: inherit;
+
+}
+
+.line {
+    display: flex;
+    width: -webkit-fill-available;
+
+}
+
+footer {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+}
+
+tr {
+    height: 84px;
+    border: 1px black solid;
+    border-spacing: 0;
+
+}
+
+th {
+    border: 1px black solid;
+    border-spacing: 0;
+    font-size: 28px;
+    line-height: 1.5em;
+    font-weight: normal;
+
+}
+
+td {
+    border: 1px black solid;
+    font-size: 28px;
+    line-height: 1.5em;
+}
+
+section {
+    width: 90%;
+}
+
+table {
+    width: 100%;
+    height: auto;
+    border: 1px black solid;
+    border-spacing: 0;
+}
+
+caption {
+    margin: 20px auto;
+    font-size: 32px;
+}
+
+p {
+    font-size: 28px;
+    line-height: 1.5em;
+}
