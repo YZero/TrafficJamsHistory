@@ -1,3 +1,4 @@
+import locale
 from itertools import zip_longest
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -107,8 +108,18 @@ class PdfPrintView(LoginRequiredMixin, TemplateView):
         if not self.extra_context:
             self.extra_context = {}
 
+        locale.setlocale( locale.LC_ALL, '' )
+            
         grouped_things = [
-            dict(item, counter=idx)
+            dict(
+                item, 
+                counter=idx, 
+                cost=locale.currency(
+                    item['cost'],
+                    symbol=False, 
+                    grouping=True,
+                )
+            )
             for idx, item in enumerate(
                 PersonalThing.objects.order_by(
                     'nomenclature__name',
