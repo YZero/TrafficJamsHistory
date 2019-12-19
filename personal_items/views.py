@@ -108,7 +108,7 @@ class PdfPrintView(LoginRequiredMixin, TemplateView):
         if not self.extra_context:
             self.extra_context = {}
 
-        locale.setlocale( locale.LC_ALL, '' )
+        locale.setlocale( locale.LC_ALL, 'ru_RU' )
             
         grouped_things = [
             dict(
