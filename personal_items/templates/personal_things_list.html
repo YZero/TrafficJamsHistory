@@ -8,7 +8,7 @@
 
     <h1 class="heading">Уже Добавленные вещи</h1>
     {% for category in categories %}
-        <a href="{{ category.get_pdf_url }}">{{ category.name }}</a>
+        <a href="{{ category.get_pdf_url }}">PDF {{ category.name }}</a>
     {% endfor %}
 
     <a href="{% url 'add_personal_thing' %}">Добавить!</a>
