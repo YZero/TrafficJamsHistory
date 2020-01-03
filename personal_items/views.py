@@ -8,7 +8,7 @@ from django.views.generic import ListView, CreateView, TemplateView
 
 from map_shots.mixins import JSONResponseMixin
 from personal_items.forms import PersonalThingForm
-from personal_items.models import Nomenclature, Unit, PersonalThing
+from personal_items.models import Nomenclature, Unit, PersonalThing, Category
 
 
 def grouper(iterable, n, fillvalue=None):
@@ -41,6 +41,22 @@ class BaseDictModelListView(JSONResponseMixin, View):
         return self.render_to_json_response(context={
             self.key: nomenclature_result,
         })
+
+
+class CategoryFilterMixin:
+
+    @staticmethod
+    def get_category_filter(request):
+        category_filter = {}
+
+        if request.GET.get('c'):
+            category_filter['category'] = request.GET['c']
+        else:
+            last_category = Category.objects.last()
+            if last_category:
+                category_filter['category'] = last_category.id
+
+        return category_filter
 
 
 class NomenclatureListView(BaseDictModelListView):
@@ -89,26 +105,44 @@ class PersonalThingsFormView(LoginRequiredMixin, CreateView):
         return f_kwargs
 
 
-class PersonalThingsListView(LoginRequiredMixin, ListView):
+class PersonalThingsListView(LoginRequiredMixin, CategoryFilterMixin, ListView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
     model = PersonalThing
     template_name = 'personal_things_list.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super().get_context_data(
+            object_list=object_list,
+            **kwargs,
+        )
+        context_data['categories'] = Category.objects.all()
 
-class PdfPrintView(LoginRequiredMixin, TemplateView):
+        return context_data
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        category_filter = self.get_category_filter(self.request)
+        qs = qs.filter(**category_filter)
+
+        return qs
+
+
+class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'pdf_template.html'
 
     def get(self, request, *args, **kwargs):
-        first_page_count = 12
+        first_page_count = int(request.GET.get('first_page_count', 12))
         next_page_count = int(request.GET.get('next_page_count', 23))
+        category_filter = self.get_category_filter(request)
 
         if not self.extra_context:
             self.extra_context = {}
 
-        locale.setlocale( locale.LC_ALL, 'ru_RU' )
+        locale.setlocale(locale.LC_ALL, 'ru_RU')
             
         grouped_things = [
             dict(
@@ -121,7 +155,9 @@ class PdfPrintView(LoginRequiredMixin, TemplateView):
                 )
             )
             for idx, item in enumerate(
-                PersonalThing.objects.order_by(
+                PersonalThing.objects.filter(
+                    **category_filter,
+                ).order_by(
                     'nomenclature__name',
                     'unit__name',
                 ).values(

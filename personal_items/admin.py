@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from personal_items.models import PersonalThing, Nomenclature, Unit
+from personal_items.models import PersonalThing, Nomenclature, Unit, Category
 
 
 @admin.register(PersonalThing)
@@ -16,4 +16,9 @@ class NomenclatureAdmin(admin.ModelAdmin):
 
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     pass
