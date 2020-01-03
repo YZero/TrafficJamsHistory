@@ -140,6 +140,14 @@ class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
     redirect_field_name = 'redirect_to'
     template_name = 'pdf_template.html'
 
+    @staticmethod
+    def locale_currency(currency_sum):
+        return locale.currency(
+            currency_sum,
+            symbol=False,
+            grouping=True,
+        )
+
     def get(self, request, *args, **kwargs):
         first_page_count = int(request.GET.get('first_page_count', 12))
         next_page_count = int(request.GET.get('next_page_count', 23))
@@ -149,38 +157,46 @@ class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
             self.extra_context = {}
 
         locale.setlocale(locale.LC_ALL, 'ru_RU')
-            
-        grouped_things = [
-            dict(
-                item, 
-                counter=idx, 
-                cost=locale.currency(
-                    item['cost'],
-                    symbol=False, 
-                    grouping=True,
+
+        grouped_things = PersonalThing.objects.filter(
+            **category_filter,
+        ).order_by(
+            'nomenclature__name',
+            'unit__name',
+        ).values(
+            'nomenclature__name',
+            'unit__name',
+        ).annotate(
+            quantity=Sum('quantity'),
+            cost=Sum('cost'),
+        )
+
+        total_cost = 0
+        grouped_things_list = []
+
+        for idx, item in enumerate(grouped_things, start=1):
+            grouped_things_list.append(
+                dict(
+                    item,
+                    counter=idx,
+                    cost=self.locale_currency(item['cost'])
                 )
             )
-            for idx, item in enumerate(
-                PersonalThing.objects.filter(
-                    **category_filter,
-                ).order_by(
-                    'nomenclature__name',
-                    'unit__name',
-                ).values(
-                    'nomenclature__name',
-                    'unit__name',
-                ).annotate(
-                    quantity=Sum('quantity'),
-                    cost=Sum('cost'),
-                ),
-                start=1,
-            )
-        ]
+            total_cost += item['cost']
 
-        pages = grouper(grouped_things[first_page_count:], next_page_count)
+        pages = list(
+            grouper(grouped_things_list[first_page_count:], next_page_count)
+        )
+
+        if len(pages) > 1:
+            self.extra_context.update({
+                'pages_count': 1,
+                'first_page_number': 1,
+            })
 
         self.extra_context.update({
-            'first_things': grouped_things[:first_page_count],
+            'first_things': grouped_things_list[:first_page_count],
             'next_things_pages': pages,
+            'total_cost': self.locale_currency(total_cost),
         })
         return super().get(request, *args, **kwargs)
