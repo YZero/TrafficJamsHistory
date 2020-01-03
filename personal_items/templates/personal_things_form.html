@@ -22,6 +22,8 @@
                class="input input_unit" placeholder="ед. измерения">
         <div class="selection selection_nomenclature"></div>
         <div class="selection selection_unit"></div>
+        {{ form.category }}
+        {{ form.category.errors }}
         {{ form.nomenclature }}
         {{ form.nomenclature.errors }}
         {{ form.unit }}

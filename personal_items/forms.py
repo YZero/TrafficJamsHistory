@@ -8,6 +8,7 @@ class PersonalThingForm(ModelForm):
     class Meta:
         model = PersonalThing
         fields = (
+            'category',
             'nomenclature',
             'unit',
             'quantity',

@@ -82,6 +82,12 @@ class PersonalThingsFormView(LoginRequiredMixin, CreateView):
     form_class = PersonalThingForm
     success_url = '/add/'
 
+    def get_initial(self):
+        initial_data = super().get_initial()
+        initial_data['category'] = Category.objects.last()
+
+        return initial_data
+
     def get_form_kwargs(self):
         f_kwargs = super().get_form_kwargs()
 

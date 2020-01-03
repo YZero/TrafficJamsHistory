@@ -5,7 +5,7 @@ from personal_items.models import PersonalThing, Nomenclature, Unit, Category
 
 @admin.register(PersonalThing)
 class PersonalThingAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('category',)
 
 
 @admin.register(Nomenclature)
