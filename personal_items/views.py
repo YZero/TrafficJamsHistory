@@ -188,9 +188,11 @@ class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
             grouper(grouped_things_list[first_page_count:], next_page_count)
         )
 
-        if len(pages) > 1:
+        pages_count = len(pages)
+
+        if pages_count > 1:
             self.extra_context.update({
-                'pages_count': 1,
+                'pages_count': pages_count,
                 'first_page_number': 1,
             })
 
