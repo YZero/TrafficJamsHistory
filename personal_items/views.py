@@ -192,7 +192,7 @@ class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
 
         if pages_count > 1:
             self.extra_context.update({
-                'pages_count': pages_count,
+                'pages_count': pages_count + 1,
                 'first_page_number': 1,
             })
 
