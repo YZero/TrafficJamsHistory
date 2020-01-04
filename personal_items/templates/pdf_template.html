@@ -83,15 +83,15 @@
         <div style="width: 60%;">
             <div class="line">
                 <p class="txt">Общая стоимость</p>
-                <div class="underline">{{ total_cost }}</div>
+                <div class="underline underline_text">{{ total_cost }}</div>
                 <p>рублей</p>
             </div>
             <div>
                 <div class="line">
                     <p class="txt">Количество листов описи</p>
-                    <div class="underline" style="width: 40%">{{ pages_count }}</div>
+                    <div class="underline underline_text" style="width: 40%;">{{ pages_count }}</div>
                     <p>лист</p>
-                    <div class="underline" style="width: 10%">{{ first_page_number }}</div>
+                    <div class="underline underline_text" style="width: 10%;">{{ first_page_number }}</div>
                 </div>
                 <div>
                     <p style="margin: -30px 0 16px; text-align: center; font-size: 18px;">
@@ -120,7 +120,12 @@
 <div class="root">
     <section>
         <table>
-            <caption>ДОПОЛНИТЕЛЬНЫЙ ЛИСТ №<span style="letter-spacing: -5px;">{{ forloop.counter|add:1 }}</span> ОПИСИ ВЛОЖЕНИЯ</caption>
+            <caption>ДОПОЛНИТЕЛЬНЫЙ ЛИСТ №
+                <span class="page-count-text">
+                    {{ forloop.counter|add:1 }}
+                </span>
+                ОПИСИ ВЛОЖЕНИЯ
+            </caption>
             <tr>
                 <th style="width: 100px;">№ п/п</th>
                 <th>Наименование</th>
