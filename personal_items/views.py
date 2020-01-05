@@ -190,7 +190,7 @@ class PdfPrintView(LoginRequiredMixin, CategoryFilterMixin, TemplateView):
 
         pages_count = len(pages)
 
-        if pages_count > 1:
+        if pages_count > 0:
             self.extra_context.update({
                 'pages_count': pages_count + 1,
                 'first_page_number': 1,
