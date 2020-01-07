@@ -84,7 +84,12 @@ class PersonalThingsFormView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         initial_data = super().get_initial()
-        initial_data['category'] = Category.objects.last()
+        initial_data.update({
+            'category': Category.objects.last(),
+            'unit': Unit.objects.filter(
+                name__icontains='шт',
+            ).first()
+        })
 
         return initial_data
 

@@ -18,16 +18,16 @@
         <div class="results"></div>
         <input type="text" id="autoComplete" name="nomenclature_name"
                class="input input_name" placeholder="Наименование">
-        <input type="text" id="unitAutoComplete" name="unit_name"
-               class="input input_unit" placeholder="ед. измерения">
+        {% comment %}<input type="text" id="unitAutoComplete" name="unit_name"
+               class="input input_unit" placeholder="ед. измерения">{% endcomment %}
         <div class="selection selection_nomenclature"></div>
         <div class="selection selection_unit"></div>
+        {{ form.unit }}
+        {{ form.unit.errors }}
         {{ form.category }}
         {{ form.category.errors }}
         {{ form.nomenclature }}
         {{ form.nomenclature.errors }}
-        {{ form.unit }}
-        {{ form.unit.errors }}
         <div class="container">
             {{ form.quantity }}
             {{ form.quantity.errors }}

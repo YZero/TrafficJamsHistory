@@ -1,4 +1,4 @@
-from django.forms import ModelForm, HiddenInput, TextInput, forms
+from django.forms import ModelForm, HiddenInput, TextInput
 
 from personal_items.models import PersonalThing
 
@@ -16,7 +16,6 @@ class PersonalThingForm(ModelForm):
         )
         widgets = {
             'nomenclature': HiddenInput(),
-            'unit': HiddenInput(),
             'quantity': TextInput(attrs={
                 'class': 'input input_quantity',
                 'placeholder': 'количество',
