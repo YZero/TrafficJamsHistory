@@ -6,22 +6,8 @@ from map_shots.models import Shot, GeoSquare
 from map_shots.tasks import make_combinations, make_shots
 
 
-class ShotInlineAdmin(admin.TabularInline):
-    readonly_fields = ('image', 'created')
-    extra = 0
-    model = Shot
-    classes = ('collapse',)
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).order_by('-id')
-
-    def has_delete_permission(self, request, obj=None):
-        return True
-
-
 @admin.register(GeoSquare)
 class GeoSquareAdmin(admin.ModelAdmin):
-    inlines = (ShotInlineAdmin,)
     change_form_template = 'admin/geosquare_change.html'
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
@@ -45,3 +31,10 @@ class GeoSquareAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(Shot)
+class ShotAdmin(admin.ModelAdmin):
+    list_display = ('created', 'is_combination', 'image',)
+    list_filter = ('is_combination', 'square',)
+    list_select_related = ()
