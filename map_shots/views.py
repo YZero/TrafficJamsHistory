@@ -126,6 +126,11 @@ class CompileVideoView(LoginRequiredMixin, View):
         except TypeError:
             limit = None
 
+        try:
+            fps = int(request.GET.get('fps', 3))
+        except TypeError:
+            fps = 3
+
         shots = Shot.objects.filter(
             is_combination=False,
         ).values_list(
@@ -141,6 +146,6 @@ class CompileVideoView(LoginRequiredMixin, View):
 
         filename = compile_video(
             shots,
-            request.GET.get('fps', 3)
+            fps,
         )
         return HttpResponseRedirect(f'{settings.MEDIA_URL}{filename}')
