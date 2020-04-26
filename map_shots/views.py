@@ -131,7 +131,18 @@ class CompileVideoView(LoginRequiredMixin, View):
         except TypeError:
             fps = 3
 
+        filter_kwargs = {}
+
+        try:
+            filter_kwargs['created__gte'] = datetime.strptime(
+                request.GET.get('start'),
+                '%Y-%m-%d',
+            )
+        except (ValueError, TypeError):
+            pass
+
         shots = Shot.objects.filter(
+            **filter_kwargs,
             is_combination=False,
         ).values_list(
             'image',
