@@ -1,13 +1,30 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.conf import (
+    settings,
+)
+from django.conf.urls.static import (
+    static,
+)
+from django.contrib import (
+    admin,
+)
+from django.contrib.auth import (
+    views as auth_views,
+)
+from django.urls import (
+    path,
+)
 
-from map_shots.views import ShotListView, ShotCombinationListView
+from map_shots.views import (
+    CompileVideoView,
+    ShotCombinationListView,
+    ShotListView,
+)
 from personal_items.views import (
-    NomenclatureListView, UnitListView,  PersonalThingsFormView,
-    PersonalThingsListView, PdfPrintView,
+    NomenclatureListView,
+    PdfPrintView,
+    PersonalThingsFormView,
+    PersonalThingsListView,
+    UnitListView,
 )
 
 urlpatterns = [
@@ -15,6 +32,9 @@ urlpatterns = [
     path('combinations/',
          ShotCombinationListView.as_view(),
          name='combinations_list'),
+    path('compile-video/',
+         CompileVideoView.as_view(),
+         name='compile_video'),
     # ----------- Личные вещи --------------
     path('nomenclature/',
          NomenclatureListView.as_view(),
