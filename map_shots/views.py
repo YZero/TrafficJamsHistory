@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
 )
 from django.http import (
-    HttpResponse, HttpResponseRedirect,
+    HttpResponseRedirect,
 )
 from django.views import (
     View,
@@ -132,6 +132,8 @@ class CompileVideoView(LoginRequiredMixin, View):
             'image',
             'created',
             named=True,
+        ).order_by(
+            'created',
         )
 
         if limit:
@@ -139,6 +141,6 @@ class CompileVideoView(LoginRequiredMixin, View):
 
         filename = compile_video(
             shots,
-            request.GET.get('fps', 5)
+            request.GET.get('fps', 3)
         )
         return HttpResponseRedirect(f'{settings.MEDIA_URL}{filename}')
