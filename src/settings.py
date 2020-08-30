@@ -133,10 +133,10 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 CELERY_BEAT_SCHEDULE = {
-    'make-shot-task': {
-        'task': 'map_shots.tasks.make_shots',
-        'schedule': crontab(minute='*/30'),
-    }
+    # 'make-shot-task': {
+    #     'task': 'map_shots.tasks.make_shots',
+    #     'schedule': crontab(minute='*/30'),
+    # }
 }
 
 YANDEX_STATIC_MAP_API_URL = 'https://static-maps.yandex.ru/1.x/'
